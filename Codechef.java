@@ -1,33 +1,55 @@
-import java.util.Scanner;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
 
-public class Codechef {
-    static String toAlphabetic(int i){
-    int quot = i/26;
-    int rem = i%26;
-    char letter = (char)((int)'A' + rem);
-    if( quot == 0 ) {
-        return ""+letter;
-    }
-    else {
-        return toAlphabetic(quot-1) + letter;
-    }
-}
+class Codechef
+{
+    public static void main (String[] args) throws Exception
+    {
+        BufferedReader bufferReader=new BufferedReader(new InputStreamReader(System.in));
+        int n=Integer.parseInt(bufferReader.readLine());
 
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        int A = sc.nextInt();
-        for(int I = 0; I<A ; I++){
-            int B = sc.nextInt();
-            Scanner st = new Scanner((System.in));
-            String d = "";
-            d = st.nextLine();
-            if(d.length() == B) {
-                int decimal = Integer.parseInt(d, 2);
-                System.out.println(toAlphabetic(decimal));
+        while(n--!=0){
+            int size=Integer.parseInt(bufferReader.readLine());
+            String inputString=bufferReader.readLine();
+            String stringPartition="";
+            String outputString="";
+
+            for(int i=0;i<size;i=i+4){
+
+                if((i+4)==size)
+                    stringPartition=inputString.substring(i);
+                else
+                    stringPartition=inputString.substring(i,i+4);
+
+                int start=0;
+                int middle=0;
+                String patternStack="abcdefghijklmnop";
+                int last=patternStack.length();
+                String outputLetter="";
+
+                for(int j=0;j<stringPartition.length();j++){
+
+                    if(stringPartition.charAt(j)=='0'){
+                        middle=(start+last)/2;
+                        outputLetter=patternStack.substring(start,middle);
+                        last=middle;
+                    }
+                    else{
+                        middle=(start+last)/2;
+                        if(last==16)
+                            outputLetter=patternStack.substring(middle);
+                        else
+                            outputLetter=patternStack.substring(middle,last);
+                        start=middle;
+                    }
+                }
+
+                outputString=outputString+outputLetter;
             }
-            else{
-                System.out.println("Error");
-            }
-            }
+
+            System.out.println(outputString);
+
+        }
     }
 }
